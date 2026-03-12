@@ -1,35 +1,39 @@
 const phrases = [
-"HELLO CAT",
-"HAPPY TURTLE",
-"FUN PUZZLE",
-"SMART KIDS",
-"LOVE MATH",
-"CUTE ANIMALS"
+  "HELLO CAT",
+  "HAPPY TURTLE",
+  "FUN PUZZLE",
+  "SMART KIDS",
+  "LOVE MATH",
+  "CUTE ANIMALS"
 ];
 
-function generatePuzzle(){
+function phraseToNumbers(phrase) {
+  const numbers = [];
 
-const phrase = phrases[Math.floor(Math.random()*phrases.length)];
+  for (let i = 0; i < phrase.length; i++) {
+    const char = phrase[i];
 
-let numbers = [];
+    if (char === " ") {
+      numbers.push("/");
+    } else {
+      const number = char.charCodeAt(0) - 64;
+      numbers.push(number);
+    }
+  }
 
-for(let i=0;i<phrase.length;i++){
-
-let char = phrase[i];
-
-if(char===" "){
-numbers.push("/");
-}
-else{
-let number = char.charCodeAt(0) - 64;
-numbers.push(number);
-}
-
+  return numbers.join(" ");
 }
 
-document.getElementById("puzzle").innerText = numbers.join(" ");
+function generatePuzzle() {
+  const randomIndex = Math.floor(Math.random() * phrases.length);
+  const phrase = phrases[randomIndex];
+  const puzzleText = phraseToNumbers(phrase);
 
-document.getElementById("answer").innerText = "";
-
+  document.getElementById("puzzle").textContent = puzzleText;
+  document.getElementById("answer").textContent = "";
 }
 
+document.getElementById("newPuzzleBtn").addEventListener("click", generatePuzzle);
+
+// Show one puzzle automatically when page loads
+generatePuzzle();
