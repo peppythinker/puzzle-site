@@ -1,46 +1,29 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f6f8fb;
-    margin: 0;
-    padding: 40px;
-    text-align: center;
+body{
+font-family: Arial;
+text-align:center;
+background:#f4f6fa;
+padding:40px;
 }
 
-h1 {
-    color: #333;
+#puzzle{
+font-size:28px;
+margin-top:30px;
+letter-spacing:6px;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+#answer{
+margin-top:30px;
+font-size:32px;
+color:#2c7a2c;
 }
 
-button:hover {
-    background: #45a049;
+button{
+padding:10px 20px;
+font-size:18px;
+background:#4CAF50;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
 }
 
-/* puzzle grid */
-
-#grid {
-    margin: 30px auto;
-    display: grid;
-    grid-template-columns: repeat(10, 40px);
-    gap: 4px;
-    width: max-content;
-}
-
-.cell {
-    width: 40px;
-    height: 40px;
-    background: white;
-    border: 1px solid #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-}
