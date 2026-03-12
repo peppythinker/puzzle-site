@@ -38,3 +38,39 @@ button:hover {
   font-size: 24px;
   color: #2c7a2c;
 }
+body{
+font-family: Arial;
+text-align:center;
+background:#f4f6fa;
+padding:40px;
+}
+
+button{
+padding:10px 20px;
+font-size:18px;
+background:#4CAF50;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin:10px;
+}
+
+#puzzle{
+font-size:30px;
+margin-top:30px;
+letter-spacing:6px;
+}
+
+input{
+padding:10px;
+font-size:18px;
+width:260px;
+text-align:center;
+}
+
+#result{
+margin-top:20px;
+font-size:22px;
+font-weight:bold;
+}
