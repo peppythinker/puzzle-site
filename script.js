@@ -1,20 +1,34 @@
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const phrases = [
+"HELLO CAT",
+"HAPPY TURTLE",
+"FUN PUZZLE",
+"SMART KIDS",
+"LOVE MATH",
+"CUTE ANIMALS"
+];
 
-function generateGrid() {
+function generatePuzzle(){
 
-    const grid = document.getElementById("grid");
-    grid.innerHTML = "";
+const phrase = phrases[Math.floor(Math.random()*phrases.length)];
 
-    for (let i = 0; i < 100; i++) {
+let numbers = [];
 
-        const cell = document.createElement("div");
-        cell.className = "cell";
+for(let i=0;i<phrase.length;i++){
 
-        const randomLetter =
-            letters[Math.floor(Math.random() * letters.length)];
+let char = phrase[i];
 
-        cell.textContent = randomLetter;
+if(char===" "){
+numbers.push("/");
+}
+else{
+let number = char.charCodeAt(0) - 64;
+numbers.push(number);
+}
 
-        grid.appendChild(cell);
-    }
+}
+
+document.getElementById("puzzle").innerText = numbers.join(" ");
+
+document.getElementById("answer").innerText = "";
+
 }
