@@ -1,49 +1,85 @@
 const phrases = [
-"HELLO CAT",
-"HAPPY TURTLE",
-"FUN PUZZLE",
-"SMART KIDS",
-"LOVE MATH",
-"CUTE ANIMALS"
+  "CAT",
+  "DOG",
+  "HELLO",
+  "LOVE",
+  "SMART",
+  "FUN MATH",
+  "HAPPY CAT",
+  "CUTE DOG",
+  "BEST KID",
+  "PLAY TIME",
+  "GOOD JOB",
+  "SUPER STAR"
 ];
 
 let currentPhrase = "";
 
-function generatePuzzle(){
-
-currentPhrase = phrases[Math.floor(Math.random()*phrases.length)];
-
-let numbers = [];
-
-for(let i=0;i<currentPhrase.length;i++){
-
-let char = currentPhrase[i];
-
-if(char===" "){
-numbers.push("/");
-}
-else{
-numbers.push(char.charCodeAt(0)-64);
+function letterToNumber(letter) {
+  return letter.charCodeAt(0) - 64;
 }
 
+function makeAdditionProblem(target) {
+  const first = Math.floor(Math.random() * (target + 1));
+  const second = target - first;
+  return `${first} + ${second}`;
 }
 
-document.getElementById("puzzle").innerText = numbers.join(" ");
+function phraseToMathProblems(phrase) {
+  const parts = [];
 
-document.getElementById("playerAnswer").value="";
-document.getElementById("result").innerText="";
+  for (let i = 0; i < phrase.length; i++) {
+    const char = phrase[i];
+
+    if (char === " ") {
+      parts.push("/");
+    } else {
+      const num = letterToNumber(char);
+      const problem = makeAdditionProblem(num);
+      parts.push(problem);
+    }
+  }
+
+  return parts;
 }
 
-function checkAnswer(){
+function generatePuzzle() {
+  const randomIndex = Math.floor(Math.random() * phrases.length);
+  currentPhrase = phrases[randomIndex];
 
-let player = document.getElementById("playerAnswer").value.toUpperCase();
+  const problems = phraseToMathProblems(currentPhrase);
 
-if(player === currentPhrase){
-document.getElementById("result").innerText = "✅ Correct!";
+  let html = "";
+
+  for (let i = 0; i < problems.length; i++) {
+    if (problems[i] === "/") {
+      html += `<span class="space-break"></span> / <span class="space-break"></span>`;
+    } else {
+      html += `<span>${problems[i]} = ?</span>`;
+    }
+
+    if (i < problems.length - 1) {
+      html += " &nbsp; | &nbsp; ";
+    }
+  }
+
+  document.getElementById("puzzle").innerHTML = html;
+  document.getElementById("playerAnswer").value = "";
+  document.getElementById("result").textContent = "";
 }
-else{
-document.getElementById("result").innerText = "❌ Try again";
+
+function checkAnswer() {
+  const player = document.getElementById("playerAnswer").value.trim().toUpperCase();
+
+  if (player === currentPhrase) {
+    document.getElementById("result").textContent = "✅ Correct!";
+  } else {
+    document.getElementById("result").textContent = "❌ Try again";
+  }
 }
 
+function showAnswer() {
+  document.getElementById("result").textContent = `Answer: ${currentPhrase}`;
 }
 
+generatePuzzle();
