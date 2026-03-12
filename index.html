@@ -1,20 +1,31 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Number Alphabet Puzzle</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Alphabet Puzzle</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <h1>Number → Alphabet Puzzle</h1>
-  <p>Decode the numbers into letters (1=A, 2=B, 3=C ... 26=Z)</p>
 
-  <button id="newPuzzleBtn">New Puzzle</button>
+<h1>Number → Alphabet Puzzle</h1>
+<p>Decode the numbers into letters (1=A, 2=B, 3=C ... 26=Z)</p>
 
-  <div id="puzzle"></div>
-  <div id="answer"></div>
+<button onclick="generatePuzzle()">New Puzzle</button>
 
-  <script src="script.js"></script>
+<div id="puzzle"></div>
+
+<div style="margin-top:20px;">
+<input id="playerAnswer" placeholder="Type the phrase here">
+<button onclick="checkAnswer()">Check Answer</button>
+</div>
+
+<div id="result"></div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
+
