@@ -1,30 +1,32 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Number Alphabet Puzzle</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math to Letter Puzzle</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <h1>Math → Letter Puzzle</h1>
+  <p>Solve each math problem. Then convert each answer into a letter using 1=A, 2=B, 3=C ... 26=Z.</p>
 
-<h1>Number → Alphabet Puzzle</h1>
-<p>Decode the numbers into letters (1=A, 2=B, 3=C ... 26=Z)</p>
+  <div class="key">
+    <strong>Alphabet Key:</strong> 1=A, 2=B, 3=C, 4=D, 5=E, 6=F, 7=G, 8=H, 9=I, 10=J, 11=K, 12=L, 13=M,
+    14=N, 15=O, 16=P, 17=Q, 18=R, 19=S, 20=T, 21=U, 22=V, 23=W, 24=X, 25=Y, 26=Z
+  </div>
 
-<button onclick="generatePuzzle()">New Puzzle</button>
+  <button onclick="generatePuzzle()">New Puzzle</button>
 
-<div id="puzzle"></div>
+  <div id="puzzle"></div>
 
-<div style="margin-top:20px;">
-<input id="playerAnswer" placeholder="Type the phrase here">
-<button onclick="checkAnswer()">Check Answer</button>
-</div>
+  <div class="answer-area">
+    <input id="playerAnswer" type="text" placeholder="Type the phrase here">
+    <button onclick="checkAnswer()">Check Answer</button>
+    <button onclick="showAnswer()">Show Answer</button>
+  </div>
 
-<div id="result"></div>
+  <div id="result"></div>
 
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
