@@ -38,11 +38,12 @@ function checkAnswer(){
 
 let player = document.getElementById("playerAnswer").value.toUpperCase();
 
-if(player===currentPhrase){
-document.getElementById("result").innerText="✅ Correct!";
+if(player === currentPhrase){
+document.getElementById("result").innerText = "✅ Correct!";
 }
 else{
-document.getElementById("result").innerText="❌ Try again";
+document.getElementById("result").innerText = "❌ Try again";
 }
 
 }
+
