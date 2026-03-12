@@ -1,39 +1,48 @@
 const phrases = [
-  "HELLO CAT",
-  "HAPPY TURTLE",
-  "FUN PUZZLE",
-  "SMART KIDS",
-  "LOVE MATH",
-  "CUTE ANIMALS"
+"HELLO CAT",
+"HAPPY TURTLE",
+"FUN PUZZLE",
+"SMART KIDS",
+"LOVE MATH",
+"CUTE ANIMALS"
 ];
 
-function phraseToNumbers(phrase) {
-  const numbers = [];
+let currentPhrase = "";
 
-  for (let i = 0; i < phrase.length; i++) {
-    const char = phrase[i];
+function generatePuzzle(){
 
-    if (char === " ") {
-      numbers.push("/");
-    } else {
-      const number = char.charCodeAt(0) - 64;
-      numbers.push(number);
-    }
-  }
+currentPhrase = phrases[Math.floor(Math.random()*phrases.length)];
 
-  return numbers.join(" ");
+let numbers = [];
+
+for(let i=0;i<currentPhrase.length;i++){
+
+let char = currentPhrase[i];
+
+if(char===" "){
+numbers.push("/");
+}
+else{
+numbers.push(char.charCodeAt(0)-64);
 }
 
-function generatePuzzle() {
-  const randomIndex = Math.floor(Math.random() * phrases.length);
-  const phrase = phrases[randomIndex];
-  const puzzleText = phraseToNumbers(phrase);
-
-  document.getElementById("puzzle").textContent = puzzleText;
-  document.getElementById("answer").textContent = "";
 }
 
-document.getElementById("newPuzzleBtn").addEventListener("click", generatePuzzle);
+document.getElementById("puzzle").innerText = numbers.join(" ");
 
-// Show one puzzle automatically when page loads
-generatePuzzle();
+document.getElementById("playerAnswer").value="";
+document.getElementById("result").innerText="";
+}
+
+function checkAnswer(){
+
+let player = document.getElementById("playerAnswer").value.toUpperCase();
+
+if(player===currentPhrase){
+document.getElementById("result").innerText="✅ Correct!";
+}
+else{
+document.getElementById("result").innerText="❌ Try again";
+}
+
+}
