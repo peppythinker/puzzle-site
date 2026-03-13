@@ -44,15 +44,27 @@ function setMode(mode) {
 
   nextRandomBtn.classList.toggle("hidden", mode !== "random");
 
-  // CLEAR PREVIOUS PUZZLE
+  // show custom input again when switching back to custom mode
+  if (mode === "custom") {
+    customControls.style.display = "";
+    phraseInput.value = "";
+  }
+
+  // clear old puzzle
   puzzleBoard.innerHTML = "";
   currentPhrase = "";
   currentLetters = [];
   decodedLetters = [];
 
+  // reset decoded phrase display
   updateDecodedPhrase();
+
+  // hide puzzle section until user starts a new puzzle
+  gameSection.classList.add("hidden");
+
   clearMessage();
 }
+
 
 
 function sanitizePhrase(text) {
