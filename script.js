@@ -239,6 +239,13 @@ function generateCustomPuzzle() {
   showMessage("Your custom puzzle is ready.", "success");
 }
 
+
+function numberToLetter(num) {
+  if (num < 1 || num > 26) return "";
+  return String.fromCharCode(num + 64);
+}
+
+
 function showMessage(message, type) {
   resultMessage.textContent = message;
   resultMessage.className = `result-message ${type}`;
