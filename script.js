@@ -227,6 +227,8 @@ function checkAnswer() {
   }
 }
 
+
+
 function showAnswer() {
   if (!currentPhrase) {
     showMessage("Please start a puzzle first.", "error");
@@ -236,17 +238,27 @@ function showAnswer() {
   const inputs = document.querySelectorAll(".letter-box");
   const cards = document.querySelectorAll(".puzzle-card");
 
-  inputs.forEach((input, index) => {
-    input.value = currentLetters[index];
-  });
+  let inputIndex = 0;
 
-  cards.forEach((card) => {
+  currentLetters.forEach((letter) => {
+
+    // skip spaces
+    if (letter === " ") return;
+
+    const input = inputs[inputIndex];
+    const card = cards[inputIndex];
+
+    input.value = letter;
     card.classList.add("revealed");
     card.classList.add("correct");
+
+    inputIndex++;
   });
 
   showMessage(`Answer revealed: ${currentPhrase}`, "info");
 }
+
+
 
 
 function loadRandomPuzzle() {
