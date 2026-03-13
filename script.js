@@ -249,5 +249,5 @@ phraseInput.addEventListener("keydown", (event) => {
 });
 
 setMode("random");
-loadRandomPuzzle();
+//loadRandomPuzzle();
 
