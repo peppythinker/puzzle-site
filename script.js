@@ -7,10 +7,8 @@ const phrases = [
   "FUN MATH",
   "HAPPY CAT",
   "CUTE DOG",
-  "BEST KID",
-  "PLAY TIME",
   "GOOD JOB",
-  "SUPER STAR"
+  "BEST KID"
 ];
 
 let currentPhrase = "";
@@ -19,59 +17,43 @@ function letterToNumber(letter) {
   return letter.charCodeAt(0) - 64;
 }
 
-function makeAdditionProblem(target) {
-  const first = Math.floor(Math.random() * (target + 1));
-  const second = target - first;
+function makeAdditionProblem(answer) {
+  const first = Math.floor(Math.random() * (answer + 1));
+  const second = answer - first;
   return `${first} + ${second}`;
-}
-
-function phraseToMathProblems(phrase) {
-  const parts = [];
-
-  for (let i = 0; i < phrase.length; i++) {
-    const char = phrase[i];
-
-    if (char === " ") {
-      parts.push("/");
-    } else {
-      const num = letterToNumber(char);
-      const problem = makeAdditionProblem(num);
-      parts.push(problem);
-    }
-  }
-
-  return parts;
 }
 
 function generatePuzzle() {
   const randomIndex = Math.floor(Math.random() * phrases.length);
   currentPhrase = phrases[randomIndex];
 
-  const problems = phraseToMathProblems(currentPhrase);
+  let output = "";
 
-  let html = "";
+  for (let i = 0; i < currentPhrase.length; i++) {
+    const char = currentPhrase[i];
 
-  for (let i = 0; i < problems.length; i++) {
-    if (problems[i] === "/") {
-      html += `<span class="space-break"></span> / <span class="space-break"></span>`;
+    if (char === " ") {
+      output += " / ";
     } else {
-      html += `<span>${problems[i]} = ?</span>`;
+      const number = letterToNumber(char);
+      const problem = makeAdditionProblem(number);
+      output += problem + " = ?";
     }
 
-    if (i < problems.length - 1) {
-      html += " &nbsp; | &nbsp; ";
+    if (i < currentPhrase.length - 1) {
+      output += " | ";
     }
   }
 
-  document.getElementById("puzzle").innerHTML = html;
+  document.getElementById("puzzle").textContent = output;
   document.getElementById("playerAnswer").value = "";
   document.getElementById("result").textContent = "";
 }
 
 function checkAnswer() {
-  const player = document.getElementById("playerAnswer").value.trim().toUpperCase();
+  const playerAnswer = document.getElementById("playerAnswer").value.trim().toUpperCase();
 
-  if (player === currentPhrase) {
+  if (playerAnswer === currentPhrase) {
     document.getElementById("result").textContent = "✅ Correct!";
   } else {
     document.getElementById("result").textContent = "❌ Try again";
@@ -79,7 +61,7 @@ function checkAnswer() {
 }
 
 function showAnswer() {
-  document.getElementById("result").textContent = `Answer: ${currentPhrase}`;
+  document.getElementById("result").textContent = "Answer: " + currentPhrase;
 }
 
 generatePuzzle();
