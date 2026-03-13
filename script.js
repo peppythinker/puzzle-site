@@ -99,6 +99,14 @@ updateDecodedPhrase();
   puzzleBoard.innerHTML = "";
 
   currentLetters.forEach((letter, index) => {
+    
+    if (letter === " ") {
+      const spacer = document.createElement("div");
+      spacer.className = "puzzle-space";
+      puzzleBoard.appendChild(spacer);
+      return;
+    }
+    
     const answerNumber = letterToNumber(letter);
     const problem = makeProblemForNumber(answerNumber);
 
