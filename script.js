@@ -27,6 +27,7 @@ const randomPhrases = [
   "GAMES"
 ];
 
+let decodedLetters = [];
 let currentMode = "random";
 let currentPhrase = "";
 let currentLetters = [];
