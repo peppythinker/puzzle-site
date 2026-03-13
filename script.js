@@ -202,9 +202,9 @@ function showAnswer() {
 
 function loadRandomPuzzle() {
   const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
+   document.querySelector(".game-section").classList.remove("hidden");
   buildPuzzle(phrase);
   showMessage("New random puzzle loaded.", "info");
-  document.querySelector(".game-section").classList.remove("hidden");
 }
 
 function generateCustomPuzzle() {
@@ -214,10 +214,9 @@ function generateCustomPuzzle() {
     showMessage("Please enter letters only.", "error");
     return;
   }
-
+  document.querySelector(".game-section").classList.remove("hidden");
   buildPuzzle(cleaned);
   showMessage("Your custom puzzle is ready.", "success");
-  document.querySelector(".game-section").classList.remove("hidden");
 }
 
 function showMessage(message, type) {
