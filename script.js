@@ -75,19 +75,47 @@ function letterToNumber(letter) {
   return letter.charCodeAt(0) - 64;
 }
 
-function makeProblemForNumber(target) {
-  let a;
-  let b;
 
-  if (target === 1) {
-    return { a: 1, b: 0, answer: 1 };
+
+function makeProblemForNumber(target) {
+
+  const terms = Math.floor(Math.random() * 2) + 2; 
+  // 2–3 operations
+
+  let expression = "";
+  let current = Math.floor(Math.random() * 10) + 5;
+
+  expression += current;
+
+  for (let i = 0; i < terms; i++) {
+
+    const useAdd = Math.random() < 0.5;
+    const value = Math.floor(Math.random() * 10) + 1;
+
+    if (useAdd) {
+      current += value;
+      expression += ` + ${value}`;
+    } else {
+      current -= value;
+      expression += ` - ${value}`;
+    }
   }
 
-  a = Math.floor(Math.random() * (target - 1)) + 1;
-  b = target - a;
+  // adjust the final value to equal the target
+  const diff = target - current;
 
-  return { a, b, answer: target };
+  if (diff > 0) {
+    expression += ` + ${diff}`;
+  } else if (diff < 0) {
+    expression += ` - ${Math.abs(diff)}`;
+  }
+
+  return {
+    expression: expression,
+    answer: target
+  };
 }
+
 
 function buildPuzzle(phrase) {
   currentPhrase = phrase;
