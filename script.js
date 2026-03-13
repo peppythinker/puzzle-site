@@ -12,6 +12,7 @@ const puzzleBoard = document.getElementById("puzzleBoard");
 const checkAnswerBtn = document.getElementById("checkAnswerBtn");
 const showAnswerBtn = document.getElementById("showAnswerBtn");
 const resultMessage = document.getElementById("resultMessage");
+const gameSection = document.querySelector(".game-section");
 
 const randomPhrases = [
   "SMILE",
@@ -40,6 +41,11 @@ function setMode(mode) {
   customControls.classList.toggle("active", mode === "custom");
 
   nextRandomBtn.classList.toggle("hidden", mode !== "random");
+
+  // show custom input area again when user switches back to custom mode
+  if (mode === "custom") {
+    customControls.style.display = "";
+  }
 
   clearMessage();
 }
@@ -164,7 +170,12 @@ function checkAnswer() {
 
   const userAnswer = getUserAnswer();
 
-  if (userAnswer.length !== currentPhrase.length || userAnswer.includes("")) {
+  if (userAnswer.length !== currentPhrase.length) {
+    showMessage("Fill in all the letter boxes first.", "error");
+    return;
+  }
+
+  if ([...document.querySelectorAll(".letter-box")].some((input) => input.value === "")) {
     showMessage("Fill in all the letter boxes first.", "error");
     return;
   }
@@ -202,7 +213,8 @@ function showAnswer() {
 
 function loadRandomPuzzle() {
   const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
-   document.querySelector(".game-section").classList.remove("hidden");
+
+  gameSection.classList.remove("hidden");
   buildPuzzle(phrase);
   showMessage("New random puzzle loaded.", "info");
 }
@@ -214,8 +226,16 @@ function generateCustomPuzzle() {
     showMessage("Please enter letters only.", "error");
     return;
   }
-  document.querySelector(".game-section").classList.remove("hidden");
+
+  gameSection.classList.remove("hidden");
   buildPuzzle(cleaned);
+
+  // clear the answer so it is no longer visible
+  phraseInput.value = "";
+
+  // hide the custom input area after puzzle starts
+  customControls.style.display = "none";
+
   showMessage("Your custom puzzle is ready.", "success");
 }
 
@@ -240,6 +260,7 @@ customTab.addEventListener("click", () => {
 newPuzzleBtn.addEventListener("click", loadRandomPuzzle);
 nextRandomBtn.addEventListener("click", loadRandomPuzzle);
 generateBtn.addEventListener("click", generateCustomPuzzle);
+
 checkAnswerBtn.addEventListener("click", checkAnswer);
 showAnswerBtn.addEventListener("click", showAnswer);
 
@@ -249,6 +270,7 @@ phraseInput.addEventListener("keydown", (event) => {
   }
 });
 
+// default page state: random tab selected, but no puzzle shown yet
 setMode("random");
-//loadRandomPuzzle();
+gameSection.classList.add("hidden");
 
