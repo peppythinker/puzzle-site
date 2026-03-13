@@ -68,7 +68,7 @@ function setMode(mode) {
 
 
 function sanitizePhrase(text) {
-  return text.toUpperCase().replace(/[^A-Z]/g, "");
+  return text.toUpperCase().replace(/[^A-Z ]/g, "");
 }
 
 function letterToNumber(letter) {
