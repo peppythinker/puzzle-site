@@ -403,3 +403,111 @@ body {
 .puzzle-space {
   width: 40px;
 }
+
+
+/* ===== Word search page ===== */
+
+.word-search-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 540px) minmax(250px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.word-search-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(30px, 48px));
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #d9e0ea;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  user-select: none;
+}
+
+.word-cell {
+  border: 1px solid #d1d9e5;
+  background: #f6f9ff;
+  color: #1f1f1f;
+  border-radius: 8px;
+  min-height: 42px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.word-cell.selected {
+  background: #ffe9b0;
+  border-color: #f0b936;
+}
+
+.word-cell.found {
+  background: #44b454;
+  border-color: #389b45;
+  color: #fff;
+}
+
+.word-search-sidebar {
+  background: #fff;
+  border: 1px solid #d9e0ea;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+.word-search-sidebar h2 {
+  margin-top: 0;
+}
+
+
+.word-input-panel {
+  margin-bottom: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.word-input-label {
+  font-size: 0.92rem;
+  color: #555;
+  font-weight: 700;
+}
+
+.word-input {
+  width: 100%;
+  border: 1px solid #cfd7e3;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.word-input:focus {
+  outline: none;
+  border-color: #44b454;
+  box-shadow: 0 0 0 3px rgba(68, 180, 84, 0.12);
+}
+
+.word-list {
+  margin: 0 0 18px;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.word-list li {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.word-list li.found {
+  color: #44b454;
+  text-decoration: line-through;
+}
+
+@media (max-width: 900px) {
+  .word-search-layout {
+    grid-template-columns: 1fr;
+  }
+}
