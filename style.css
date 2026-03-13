@@ -386,3 +386,15 @@ body {
     text-align: center;
   }
 }
+
+.decoded-section {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.decoded-phrase {
+  margin-top: 10px;
+  font-size: 28px;
+  letter-spacing: 10px;
+  font-weight: bold;
+}
