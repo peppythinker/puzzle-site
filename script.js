@@ -204,6 +204,7 @@ function loadRandomPuzzle() {
   const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
   buildPuzzle(phrase);
   showMessage("New random puzzle loaded.", "info");
+  document.querySelector(".game-section").classList.remove("hidden");
 }
 
 function generateCustomPuzzle() {
@@ -216,6 +217,7 @@ function generateCustomPuzzle() {
 
   buildPuzzle(cleaned);
   showMessage("Your custom puzzle is ready.", "success");
+  document.querySelector(".game-section").classList.remove("hidden");
 }
 
 function showMessage(message, type) {
