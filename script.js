@@ -27,31 +27,42 @@ function generatePuzzle() {
   const randomIndex = Math.floor(Math.random() * phrases.length);
   currentPhrase = phrases[randomIndex];
 
-  let output = "";
+  const puzzle = document.getElementById("puzzle");
+  puzzle.innerHTML = "";
 
   for (let i = 0; i < currentPhrase.length; i++) {
     const char = currentPhrase[i];
 
     if (char === " ") {
-      output += " / ";
+      const gap = document.createElement("div");
+      gap.className = "word-gap";
+      puzzle.appendChild(gap);
     } else {
       const number = letterToNumber(char);
       const problem = makeAdditionProblem(number);
-      output += problem + " = ?";
-    }
 
-    if (i < currentPhrase.length - 1) {
-      output += " | ";
+      const box = document.createElement("div");
+      box.className = "puzzle-box";
+
+      box.innerHTML = `
+        <div class="problem">${problem} = ?</div>
+        <div class="box-label">Solve me</div>
+      `;
+
+      puzzle.appendChild(box);
     }
   }
 
-  document.getElementById("puzzle").textContent = output;
   document.getElementById("playerAnswer").value = "";
   document.getElementById("result").textContent = "";
 }
 
 function checkAnswer() {
-  const playerAnswer = document.getElementById("playerAnswer").value.trim().toUpperCase();
+  const playerAnswer = document
+    .getElementById("playerAnswer")
+    .value
+    .trim()
+    .toUpperCase();
 
   if (playerAnswer === currentPhrase) {
     document.getElementById("result").textContent = "✅ Correct!";
