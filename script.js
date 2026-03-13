@@ -268,10 +268,18 @@ function generateCustomPuzzle() {
   showMessage("Your custom puzzle is ready.", "success");
 }
 
+
 function updateDecodedPhrase() {
   const display = document.getElementById("decodedPhrase");
+
+  if (!decodedLetters.length) {
+    display.textContent = "";
+    return;
+  }
+
   display.textContent = decodedLetters.join(" ");
 }
+
 
 function numberToLetter(num) {
   if (num < 1 || num > 26) return "";
