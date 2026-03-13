@@ -32,6 +32,7 @@ let currentMode = "random";
 let currentPhrase = "";
 let currentLetters = [];
 
+
 function setMode(mode) {
   currentMode = mode;
 
@@ -43,13 +44,16 @@ function setMode(mode) {
 
   nextRandomBtn.classList.toggle("hidden", mode !== "random");
 
-  // show custom input area again when user switches back to custom mode
-  if (mode === "custom") {
-    customControls.style.display = "";
-  }
+  // CLEAR PREVIOUS PUZZLE
+  puzzleBoard.innerHTML = "";
+  currentPhrase = "";
+  currentLetters = [];
+  decodedLetters = [];
 
+  updateDecodedPhrase();
   clearMessage();
 }
+
 
 function sanitizePhrase(text) {
   return text.toUpperCase().replace(/[^A-Z]/g, "");
