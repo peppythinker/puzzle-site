@@ -174,3 +174,17 @@ input {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
   border-color: #e3e7ee;
 }
+
+.custom-area{
+margin:30px 0;
+}
+
+#customPhrase{
+padding:12px;
+font-size:18px;
+width:300px;
+text-align:center;
+border-radius:8px;
+border:1px solid #bbb;
+margin-right:10px;
+}
