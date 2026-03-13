@@ -93,8 +93,8 @@ function buildPuzzle(phrase) {
 
     const input = document.createElement("input");
     input.className = "letter-box";
-    input.type = "text";
-    input.maxLength = 1;
+    input.type = "number";
+    input.maxLength = 2;
     input.autocomplete = "off";
     input.dataset.index = index;
     input.setAttribute("aria-label", `Letter ${index + 1}`);
