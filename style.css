@@ -398,3 +398,8 @@ body {
   letter-spacing: 10px;
   font-weight: bold;
 }
+
+
+.puzzle-space {
+  width: 40px;
+}
