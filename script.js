@@ -145,7 +145,7 @@ updateDecodedPhrase();
 
     const math = document.createElement("div");
     math.className = "math-problem";
-    math.textContent = `${problem.a} + ${problem.b} = ?`;
+    math.textContent = `${problem.expression} = ?`;
 
     const input = document.createElement("input");
     input.className = "letter-box";
