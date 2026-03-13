@@ -279,12 +279,11 @@ function generateCustomPuzzle() {
 function updateDecodedPhrase() {
   const display = document.getElementById("decodedPhrase");
 
-  if (!decodedLetters.length) {
-    display.textContent = "";
-    return;
-  }
+  const phrase = decodedLetters
+    .map((letter) => (letter === " " ? " " : letter))
+    .join(" ");
 
-  display.textContent = decodedLetters.join(" ");
+  display.textContent = phrase;
 }
 
 
