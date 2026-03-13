@@ -97,8 +97,9 @@ updateDecodedPhrase();
 
     const input = document.createElement("input");
     input.className = "letter-box";
-    input.type = "number";
+    input.type = "text";
     input.maxLength = 2;
+    input.inputMode = "numeric";
     input.autocomplete = "off";
     input.dataset.index = index;
     input.setAttribute("aria-label", `Letter ${index + 1}`);
@@ -119,24 +120,29 @@ updateDecodedPhrase();
 
 
 function handleLetterInput(event) {
-
   const input = event.target;
   const card = input.closest(".puzzle-card");
-
   const correctLetter = card.dataset.answer;
   const correctNumber = letterToNumber(correctLetter);
 
-  const value = parseInt(input.value);
+  input.value = input.value.replace(/[^0-9]/g, "").slice(0, 2);
+
+  const value = parseInt(input.value, 10);
 
   if (value === correctNumber) {
-
-    const letter = numberToLetter(value);
-    decodedLetters[card.dataset.index] = letter;
-
+    decodedLetters[card.dataset.index] = numberToLetter(value);
     updateDecodedPhrase();
     card.classList.add("correct");
 
+    const allInputs = [...document.querySelectorAll(".letter-box")];
+    const currentIndex = allInputs.indexOf(input);
+    const nextInput = allInputs[currentIndex + 1];
+    if (nextInput) {
+      nextInput.focus();
+    }
   } else {
+    decodedLetters[card.dataset.index] = "_";
+    updateDecodedPhrase();
     card.classList.remove("correct");
   }
 
