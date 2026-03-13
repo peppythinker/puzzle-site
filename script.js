@@ -77,6 +77,9 @@ function buildPuzzle(phrase) {
   currentPhrase = phrase;
   currentLetters = phrase.split("");
 
+decodedLetters = new Array(currentLetters.length).fill("_");
+updateDecodedPhrase();
+  
   puzzleBoard.innerHTML = "";
 
   currentLetters.forEach((letter, index) => {
@@ -240,6 +243,10 @@ function generateCustomPuzzle() {
   showMessage("Your custom puzzle is ready.", "success");
 }
 
+function updateDecodedPhrase() {
+  const display = document.getElementById("decodedPhrase");
+  display.textContent = decodedLetters.join(" ");
+}
 
 function numberToLetter(num) {
   if (num < 1 || num > 26) return "";
