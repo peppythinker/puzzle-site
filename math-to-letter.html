@@ -3,51 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Math to Letter Puzzle</title>
+  <title>Math → Letter Puzzle</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="page">
-    <p><a class="back-link" href="index.html">← Back to Home</a></p>
+  <main class="page">
+    <a href="index.html" class="back-link">← Back to Home</a>
 
-    <h1>Math → Letter Puzzle</h1>
-    <p class="subtitle">
-      Solve each math problem. Then use 1=A, 2=B, 3=C ... 26=Z to decode the phrase.
-    </p>
+    <header class="hero">
+      <h1>Math → Letter Puzzle</h1>
+      <p class="subtitle">
+        Solve each math problem. Then use 1=A, 2=B, 3=C ... 26=Z to decode the phrase.
+      </p>
+    </header>
 
-    <div class="key">
-      1=A, 2=B, 3=C, 4=D, 5=E, 6=F, 7=G, 8=H, 9=I, 10=J, 11=K, 12=L, 13=M,
-      14=N, 15=O, 16=P, 17=Q, 18=R, 19=S, 20=T, 21=U, 22=V, 23=W, 24=X, 25=Y, 26=Z
-    </div>
+    <section class="legend-card">
+      <p>
+        1=A, 2=B, 3=C, 4=D, 5=E, 6=F, 7=G, 8=H, 9=I, 10=J, 11=K, 12=L, 13=M,
+        14=N, 15=O, 16=P, 17=Q, 18=R, 19=S, 20=T, 21=U, 22=V, 23=W, 24=X, 25=Y, 26=Z
+      </p>
+    </section>
 
+    <section class="mode-section">
+      <h2>Choose how you want to play</h2>
 
-    <div class="custom-area">
+      <div class="mode-tabs">
+        <button id="randomTab" class="mode-tab active" type="button">Random Puzzle</button>
+        <button id="customTab" class="mode-tab" type="button">Create Your Own</button>
+      </div>
 
-<p><strong>Create your own puzzle</strong></p>
+      <div id="randomControls" class="mode-panel active">
+        <p class="mode-description">Start instantly with a ready-made puzzle phrase.</p>
+        <button id="newPuzzleBtn" class="primary-btn" type="button">Play Random Puzzle</button>
+      </div>
 
-<input id="customPhrase" placeholder="Enter a phrase (A–Z only)">
-<button onclick="generateCustomPuzzle()">Generate Puzzle</button>
+      <div id="customControls" class="mode-panel">
+        <p class="mode-description">Enter your own phrase and turn it into a puzzle.</p>
+        <div class="custom-form">
+          <input
+            type="text"
+            id="phraseInput"
+            class="phrase-input"
+            placeholder="Enter a phrase (A–Z only)"
+            maxlength="24"
+          />
+          <button id="generateBtn" class="primary-btn" type="button">Generate My Puzzle</button>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <section class="game-section">
+      <div class="section-heading">
+        <h3>Solve the math to reveal the secret phrase</h3>
+        <button id="nextRandomBtn" class="secondary-btn hidden" type="button">Next Random Puzzle</button>
+      </div>
 
+      <div id="puzzleBoard" class="puzzle-board"></div>
 
+      <div class="action-row">
+        <button id="checkAnswerBtn" class="primary-btn" type="button">Check Answer</button>
+        <button id="showAnswerBtn" class="secondary-btn" type="button">Show Answer</button>
+      </div>
 
-
-
-
-    
-    <button onclick="generatePuzzle()">New Puzzle</button>
-
-    <div id="puzzle" class="puzzle-grid"></div>
-
-    <div class="answer-area">
-      <input id="playerAnswer" type="text" placeholder="Type your phrase here" />
-      <button onclick="checkAnswer()">Check Answer</button>
-      <button onclick="showAnswer()">Show Answer</button>
-    </div>
-
-    <div id="result"></div>
-  </div>
+      <div id="resultMessage" class="result-message"></div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
