@@ -117,30 +117,33 @@ updateDecodedPhrase();
   }
 }
 
+
 function handleLetterInput(event) {
+
   const input = event.target;
-  input.value = input.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 1);
-
   const card = input.closest(".puzzle-card");
-  const expected = card.dataset.answer;
 
-  if (input.value === expected) {
+  const correctLetter = card.dataset.answer;
+  const correctNumber = letterToNumber(correctLetter);
+
+  const value = parseInt(input.value);
+
+  if (value === correctNumber) {
+
+    const letter = numberToLetter(value);
+    decodedLetters[card.dataset.index] = letter;
+
+    updateDecodedPhrase();
     card.classList.add("correct");
+
   } else {
     card.classList.remove("correct");
   }
 
-  if (input.value) {
-    const allInputs = [...document.querySelectorAll(".letter-box")];
-    const currentIndex = allInputs.indexOf(input);
-    const nextInput = allInputs[currentIndex + 1];
-    if (nextInput) {
-      nextInput.focus();
-    }
-  }
-
   clearMessage();
 }
+
+
 
 function handleLetterKeydown(event) {
   const input = event.target;
