@@ -240,6 +240,7 @@ function showAnswer() {
   showMessage(`Answer revealed: ${currentPhrase}`, "info");
 }
 
+
 function loadRandomPuzzle() {
   const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
 
@@ -259,14 +260,12 @@ function generateCustomPuzzle() {
   gameSection.classList.remove("hidden");
   buildPuzzle(cleaned);
 
-  // clear the answer so it is no longer visible
   phraseInput.value = "";
-
-  // hide the custom input area after puzzle starts
   customControls.style.display = "none";
 
   showMessage("Your custom puzzle is ready.", "success");
 }
+
 
 
 function updateDecodedPhrase() {
