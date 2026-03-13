@@ -76,3 +76,57 @@ function showAnswer() {
 }
 
 generatePuzzle();
+
+function generateCustomPuzzle(){
+
+let input = document.getElementById("customPhrase").value
+.trim()
+.toUpperCase();
+
+if(input===""){
+alert("Please enter a phrase");
+return;
+}
+
+input = input.replace(/[^A-Z ]/g,"");
+
+currentPhrase = input;
+
+const puzzle = document.getElementById("puzzle");
+puzzle.innerHTML="";
+
+for(let i=0;i<currentPhrase.length;i++){
+
+const char=currentPhrase[i];
+
+if(char===" "){
+
+const gap=document.createElement("div");
+gap.className="word-gap";
+puzzle.appendChild(gap);
+
+}else{
+
+const number=letterToNumber(char);
+const problem=makeAdditionProblem(number);
+
+const box=document.createElement("div");
+box.className="puzzle-box";
+
+box.innerHTML=`
+
+<div class="problem">${problem} = ?</div>
+<div class="box-label">Solve me</div>
+`;
+
+puzzle.appendChild(box);
+
+}
+
+}
+
+document.getElementById("playerAnswer").value="";
+document.getElementById("result").textContent="";
+
+}
+
