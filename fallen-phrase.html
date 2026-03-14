@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fallen Phrase Puzzle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <header class="hero">
+      <h1>Fallen Phrase</h1>
+      <p class="subtitle">Pick a blank, then drop letters from the matching column to rebuild the hidden phrase.</p>
+    </header>
+
+    <section class="mode-section">
+      <h2>Choose a puzzle source</h2>
+
+      <div class="mode-tabs">
+        <button id="randomFallenTab" class="mode-tab active" type="button">Random Puzzle</button>
+        <button id="customFallenTab" class="mode-tab" type="button">Create Your Own</button>
+      </div>
+
+      <div id="randomFallenControls" class="mode-panel active">
+        <p class="mode-description">Start with a ready-made phrase and letter columns.</p>
+        <button id="newFallenBtn" class="primary-btn" type="button">Play Random Puzzle</button>
+      </div>
+
+      <div id="customFallenControls" class="mode-panel">
+        <p class="mode-description">Type your own phrase and generate a fallen phrase board.</p>
+        <div class="custom-form">
+          <input
+            type="text"
+            id="fallenPhraseInput"
+            class="phrase-input"
+            placeholder="Enter a phrase (A–Z and spaces)"
+            maxlength="96"
+          />
+          <button id="generateFallenBtn" class="primary-btn" type="button">Generate My Puzzle</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="fallenSection" class="game-section hidden">
+      <div class="section-heading">
+        <h3>Letter columns</h3>
+        <button id="nextFallenBtn" class="secondary-btn" type="button">Next Random Puzzle</button>
+      </div>
+
+      <div id="fallenHint" class="legend-card fallen-hint"></div>
+      <div id="fallenColumns" class="fallen-columns" aria-live="polite"></div>
+
+      <h3 class="fallen-subheading">Phrase board</h3>
+      <div id="fallenBoard" class="fallen-board" aria-live="polite"></div>
+
+      <div class="action-row">
+        <button id="checkFallenBtn" class="primary-btn" type="button">Check Answer</button>
+        <button id="showFallenBtn" class="secondary-btn" type="button">Show Answer</button>
+      </div>
+
+      <div id="fallenMessage" class="result-message"></div>
+    </section>
+  </main>
+
+  <script src="fallen-phrase.js"></script>
+</body>
+</html>
