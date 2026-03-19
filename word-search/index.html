@@ -1,1 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Search Puzzle</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <a href="../index.html" class="back-link">← Back to Home</a>
 
+    <header class="hero">
+      <h1>Word Search</h1>
+      <p class="subtitle">Drag across letters in a straight line to find all hidden words. Create your own puzzle words or use randomized ones.</p>
+    </header>
+
+    <section class="word-search-layout">
+      <div>
+        <div id="wordSearchGrid" class="word-search-grid" aria-label="Word search letter grid"></div>
+      </div>
+
+      <aside class="word-search-sidebar">
+        <h2>Find these words</h2>
+
+        <div class="word-input-panel">
+          <label for="customWordsInput" class="word-input-label">Enter words (comma, space, or new line separated)</label>
+          <textarea id="customWordsInput" class="word-input" rows="4" placeholder="CAT, DOG, MATH, LOGIC"></textarea>
+          <button id="buildCustomPuzzleBtn" class="primary-btn" type="button">Build My Puzzle</button>
+        </div>
+
+        <ul id="wordList" class="word-list"></ul>
+
+        <div class="action-row">
+          <button id="resetWordSearchBtn" class="secondary-btn" type="button">New Puzzle</button>
+        </div>
+
+        <p id="wordSearchMessage" class="result-message info">Start selecting letters.</p>
+      </aside>
+    </section>
+  </main>
+
+  <script src="word-search.js"></script>
+</body>
+</html>
