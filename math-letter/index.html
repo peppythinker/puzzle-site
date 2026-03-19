@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math → Letter Puzzle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <header class="hero">
+      <h1>Math → Letter Puzzle</h1>
+      <p class="subtitle">
+        Solve each math problem. Then use 1=A, 2=B, 3=C ... 26=Z to decode the phrase.
+      </p>
+    </header>
+
+    <section class="mode-section">
+      <h2>Choose how you want to play</h2>
+
+      <div class="mode-tabs">
+        <button id="randomTab" class="mode-tab active" type="button">Random Puzzle</button>
+        <button id="customTab" class="mode-tab" type="button">Create Your Own</button>
+      </div>
+
+      <div id="randomControls" class="mode-panel active">
+        <p class="mode-description">Start instantly with a ready-made puzzle phrase.</p>
+        <button id="newPuzzleBtn" class="primary-btn" type="button">Play Random Puzzle</button>
+      </div>
+
+      <div id="customControls" class="mode-panel">
+        <p class="mode-description">Enter your own phrase and turn it into a puzzle.</p>
+        <div class="custom-form">
+          <input
+            type="text"
+            id="phraseInput"
+            class="phrase-input"
+            placeholder="Enter a phrase (A–Z only)"
+            maxlength="24"
+          />
+          <button id="generateBtn" class="primary-btn" type="button">Generate My Puzzle</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="game-section hidden">
+      <div class="section-heading">
+        <h3>Solve the math to reveal the secret phrase</h3>
+        <button id="nextRandomBtn" class="secondary-btn hidden" type="button">Next Random Puzzle</button>
+      </div>
+
+      <div id="puzzleBoard" class="puzzle-board"></div>
+
+      
+<div class="decoded-section">
+  <h3>Decoded Phrase</h3>
+  <div id="decodedPhrase" class="decoded-phrase"></div>
+</div>
+      
+      
+      <div class="action-row">
+        <button id="checkAnswerBtn" class="primary-btn" type="button">Check Answer</button>
+        <button id="showAnswerBtn" class="secondary-btn" type="button">Show Answer</button>
+      </div>
+
+      <div id="resultMessage" class="result-message"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
 
