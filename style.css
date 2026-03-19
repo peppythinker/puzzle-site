@@ -68,9 +68,6 @@ body {
 
 .page > .subtitle,
 .subtitle {
-  margin: 14px auto 0;
-  max-width: 760px;
-  line-height: 1.6;
   font-size: 1.1rem;
   color: #667085;
   margin-top: 14px;
