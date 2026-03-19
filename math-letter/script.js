@@ -1,0 +1,370 @@
+const randomTab = document.getElementById("randomTab");
+const customTab = document.getElementById("customTab");
+const randomControls = document.getElementById("randomControls");
+const customControls = document.getElementById("customControls");
+
+const newPuzzleBtn = document.getElementById("newPuzzleBtn");
+const nextRandomBtn = document.getElementById("nextRandomBtn");
+const generateBtn = document.getElementById("generateBtn");
+const phraseInput = document.getElementById("phraseInput");
+
+const puzzleBoard = document.getElementById("puzzleBoard");
+const checkAnswerBtn = document.getElementById("checkAnswerBtn");
+const showAnswerBtn = document.getElementById("showAnswerBtn");
+const resultMessage = document.getElementById("resultMessage");
+const gameSection = document.querySelector(".game-section");
+
+const randomPhrases = [
+  "SMILE",
+  "HAPPY",
+  "LEARN",
+  "MATH",
+  "PUZZLE",
+  "BRAIN",
+  "LOGIC",
+  "HELLO",
+  "NUMBER",
+  "GAMES"
+];
+
+let decodedLetters = [];
+let currentMode = "random";
+let currentPhrase = "";
+let currentLetters = [];
+
+
+function setMode(mode) {
+  currentMode = mode;
+
+  randomTab.classList.toggle("active", mode === "random");
+  customTab.classList.toggle("active", mode === "custom");
+
+  randomControls.classList.toggle("active", mode === "random");
+  customControls.classList.toggle("active", mode === "custom");
+
+  nextRandomBtn.classList.toggle("hidden", mode !== "random");
+
+  // show custom input again when switching back to custom mode
+  if (mode === "custom") {
+    customControls.style.display = "";
+    phraseInput.value = "";
+  }
+
+  // clear old puzzle
+  puzzleBoard.innerHTML = "";
+  currentPhrase = "";
+  currentLetters = [];
+  decodedLetters = [];
+
+  // reset decoded phrase display
+  updateDecodedPhrase();
+
+  // hide puzzle section until user starts a new puzzle
+  gameSection.classList.add("hidden");
+
+  clearMessage();
+}
+
+
+
+function sanitizePhrase(text) {
+  return text.toUpperCase().replace(/[^A-Z ]/g, "");
+}
+
+function letterToNumber(letter) {
+  return letter.charCodeAt(0) - 64;
+}
+
+
+
+function makeProblemForNumber(target) {
+
+  const terms = Math.floor(Math.random() * 2) + 2; 
+  // 2–3 operations
+
+  let expression = "";
+  let current = Math.floor(Math.random() * 10) + 5;
+
+  expression += current;
+
+  for (let i = 0; i < terms; i++) {
+
+    const useAdd = Math.random() < 0.5;
+    const value = Math.floor(Math.random() * 10) + 1;
+
+    if (useAdd) {
+      current += value;
+      expression += ` + ${value}`;
+    } else {
+      current -= value;
+      expression += ` - ${value}`;
+    }
+  }
+
+  // adjust the final value to equal the target
+  const diff = target - current;
+
+  if (diff > 0) {
+    expression += ` + ${diff}`;
+  } else if (diff < 0) {
+    expression += ` - ${Math.abs(diff)}`;
+  }
+
+  return {
+    expression: expression,
+    answer: target
+  };
+}
+
+
+function buildPuzzle(phrase) {
+  currentPhrase = phrase;
+  currentLetters = phrase.split("");
+
+decodedLetters = new Array(currentLetters.length).fill("_");
+updateDecodedPhrase();
+  
+  puzzleBoard.innerHTML = "";
+
+  currentLetters.forEach((letter, index) => {
+    
+    if (letter === " ") {
+      const spacer = document.createElement("div");
+      spacer.className = "puzzle-space";
+      puzzleBoard.appendChild(spacer);
+      return;
+    }
+    
+    const answerNumber = letterToNumber(letter);
+    const problem = makeProblemForNumber(answerNumber);
+
+    const card = document.createElement("div");
+    card.className = "puzzle-card";
+    card.dataset.index = index;
+    card.dataset.answer = letter;
+
+    const math = document.createElement("div");
+    math.className = "math-problem";
+    math.textContent = `${problem.expression} = ?`;
+
+    const input = document.createElement("input");
+    input.className = "letter-box";
+    input.type = "text";
+    input.maxLength = 2;
+    input.inputMode = "numeric";
+    input.autocomplete = "off";
+    input.dataset.index = index;
+    input.setAttribute("aria-label", `Letter ${index + 1}`);
+
+    input.addEventListener("input", handleLetterInput);
+    input.addEventListener("keydown", handleLetterKeydown);
+
+    card.appendChild(math);
+    card.appendChild(input);
+    puzzleBoard.appendChild(card);
+  });
+
+  const firstInput = puzzleBoard.querySelector(".letter-box");
+  if (firstInput) {
+    firstInput.focus();
+  }
+}
+
+
+function handleLetterInput(event) {
+  const input = event.target;
+  const card = input.closest(".puzzle-card");
+  const correctLetter = card.dataset.answer;
+  const correctNumber = letterToNumber(correctLetter);
+
+  input.value = input.value.replace(/[^0-9]/g, "").slice(0, 2);
+
+  const value = parseInt(input.value, 10);
+
+  if (value === correctNumber) {
+    decodedLetters[card.dataset.index] = numberToLetter(value);
+    updateDecodedPhrase();
+    card.classList.add("correct");
+
+    const allInputs = [...document.querySelectorAll(".letter-box")];
+    const currentIndex = allInputs.indexOf(input);
+    const nextInput = allInputs[currentIndex + 1];
+    if (nextInput) {
+      nextInput.focus();
+    }
+  } else {
+    decodedLetters[card.dataset.index] = "_";
+    updateDecodedPhrase();
+    card.classList.remove("correct");
+  }
+
+  clearMessage();
+}
+
+
+
+function handleLetterKeydown(event) {
+  const input = event.target;
+  const allInputs = [...document.querySelectorAll(".letter-box")];
+  const currentIndex = allInputs.indexOf(input);
+
+  if (event.key === "Backspace" && input.value === "" && currentIndex > 0) {
+    allInputs[currentIndex - 1].focus();
+  }
+
+  if (event.key === "ArrowLeft" && currentIndex > 0) {
+    allInputs[currentIndex - 1].focus();
+  }
+
+  if (event.key === "ArrowRight" && currentIndex < allInputs.length - 1) {
+    allInputs[currentIndex + 1].focus();
+  }
+}
+
+function getUserAnswer() {
+  return [...document.querySelectorAll(".letter-box")]
+    .map((input) => input.value.toUpperCase())
+    .join("");
+}
+
+function checkAnswer() {
+  if (!currentPhrase) {
+    showMessage("Please start a puzzle first.", "error");
+    return;
+  }
+
+  const userAnswer = getUserAnswer();
+
+  if (userAnswer.length !== currentPhrase.length) {
+    showMessage("Fill in all the letter boxes first.", "error");
+    return;
+  }
+
+  if ([...document.querySelectorAll(".letter-box")].some((input) => input.value === "")) {
+    showMessage("Fill in all the letter boxes first.", "error");
+    return;
+  }
+
+  if (userAnswer === currentPhrase) {
+    document.querySelectorAll(".puzzle-card").forEach((card) => {
+      card.classList.add("correct");
+    });
+    showMessage(`🎉 Correct! The phrase is ${currentPhrase}`, "success");
+  } else {
+    showMessage("Not quite — try again.", "error");
+  }
+}
+
+
+
+function showAnswer() {
+  if (!currentPhrase) {
+    showMessage("Please start a puzzle first.", "error");
+    return;
+  }
+
+  const inputs = document.querySelectorAll(".letter-box");
+  const cards = document.querySelectorAll(".puzzle-card");
+
+  let inputIndex = 0;
+
+  currentLetters.forEach((letter) => {
+
+    // skip spaces
+    if (letter === " ") return;
+
+    const input = inputs[inputIndex];
+    const card = cards[inputIndex];
+
+    input.value = letter;
+    card.classList.add("revealed");
+    card.classList.add("correct");
+
+    inputIndex++;
+  });
+
+  showMessage(`Answer revealed: ${currentPhrase}`, "info");
+}
+
+
+
+
+function loadRandomPuzzle() {
+  const phrase = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
+
+  gameSection.classList.remove("hidden");
+  buildPuzzle(phrase);
+  showMessage("New random puzzle loaded.", "info");
+}
+
+function generateCustomPuzzle() {
+  const cleaned = sanitizePhrase(phraseInput.value);
+
+  if (!cleaned) {
+    showMessage("Please enter letters only.", "error");
+    return;
+  }
+
+  gameSection.classList.remove("hidden");
+  buildPuzzle(cleaned);
+
+  phraseInput.value = "";
+  customControls.style.display = "none";
+
+  showMessage("Your custom puzzle is ready.", "success");
+}
+
+
+
+function updateDecodedPhrase() {
+  const display = document.getElementById("decodedPhrase");
+
+  const phrase = decodedLetters
+    .map((letter) => (letter === " " ? " " : letter))
+    .join(" ");
+
+  display.textContent = phrase;
+}
+
+
+function numberToLetter(num) {
+  if (num < 1 || num > 26) return "";
+  return String.fromCharCode(num + 64);
+}
+
+
+function showMessage(message, type) {
+  resultMessage.textContent = message;
+  resultMessage.className = `result-message ${type}`;
+}
+
+function clearMessage() {
+  resultMessage.textContent = "";
+  resultMessage.className = "result-message";
+}
+
+randomTab.addEventListener("click", () => {
+  setMode("random");
+});
+
+customTab.addEventListener("click", () => {
+  setMode("custom");
+});
+
+newPuzzleBtn.addEventListener("click", loadRandomPuzzle);
+nextRandomBtn.addEventListener("click", loadRandomPuzzle);
+generateBtn.addEventListener("click", generateCustomPuzzle);
+
+checkAnswerBtn.addEventListener("click", checkAnswer);
+showAnswerBtn.addEventListener("click", showAnswer);
+
+phraseInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    generateCustomPuzzle();
+  }
+});
+
+// default page state: random tab selected, but no puzzle shown yet
+setMode("random");
+gameSection.classList.add("hidden");
+
