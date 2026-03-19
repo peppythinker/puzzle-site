@@ -61,20 +61,19 @@ body {
 
 .page > h1,
 .hero h1 {
-  margin: 0;
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  line-height: 1.08;
+  font-size: clamp(2.6rem, 5vw, 4rem);
   font-weight: 800;
-  color: var(--heading);
+  letter-spacing: -0.02em;
 }
 
 .page > .subtitle,
 .subtitle {
   margin: 14px auto 0;
   max-width: 760px;
-  font-size: 1.12rem;
-  color: var(--muted);
   line-height: 1.6;
+  font-size: 1.1rem;
+  color: #667085;
+  margin-top: 14px;
 }
 
 .intro {
@@ -86,13 +85,18 @@ body {
 }
 
 .hero {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(219, 228, 240, 0.95);
-  border-radius: var(--radius-xl);
-  padding: 42px 24px;
-  box-shadow: var(--shadow);
-  margin-bottom: 34px;
+  text-align: center;
+  padding: 56px 24px;
+  border-radius: 28px;
+
+  background:
+    linear-gradient(180deg, #ffffffcc, #f4f7ffcc);
+
+  backdrop-filter: blur(6px);
+
+  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.06);
+
+  margin-bottom: 36px;
 }
 
 .eyebrow {
