@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sudoku</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <a href="../index.html" class="back-link">← Back to Home</a>
 
+    <header class="hero">
+      <h1>Sudoku</h1>
+      <p class="subtitle">Fill the 9×9 grid so every row, column, and 3×3 box contains digits 1 through 9 exactly once.</p>
+    </header>
+
+    <section class="sudoku-controls" aria-label="Sudoku controls">
+      <label for="sudokuDifficulty">Difficulty
+        <select id="sudokuDifficulty" class="maze-select">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+      <button id="newSudokuBtn" class="primary-btn" type="button">New Puzzle</button>
+      <button id="checkSudokuBtn" class="secondary-btn" type="button">Check</button>
+      <button id="solveSudokuBtn" class="secondary-btn" type="button">Show Solution</button>
+    </section>
+
+    <section class="sudoku-card">
+      <div id="sudokuBoard" class="sudoku-board" role="grid" aria-label="Sudoku board"></div>
+      <p id="sudokuMessage" class="result-message info">Choose a difficulty and start a puzzle.</p>
+    </section>
+  </main>
+
+  <script src="sudoku.js"></script>
+</body>
+</html>
