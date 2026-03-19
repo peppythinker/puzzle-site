@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cryptogram Puzzle</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <a href="../index.html" class="back-link">← Back to Home</a>
 
+    <header class="hero">
+      <h1>Cryptogram</h1>
+      <p class="subtitle">Decode the substitution cipher. Each encrypted letter always maps to the same real letter.</p>
+    </header>
+
+    <section class="mode-section">
+      <h2>Choose a puzzle source</h2>
+
+      <div class="mode-tabs">
+        <button id="randomCryptogramTab" class="mode-tab active" type="button">Random Puzzle</button>
+        <button id="customCryptogramTab" class="mode-tab" type="button">Create Your Own</button>
+      </div>
+
+      <div id="randomCryptogramControls" class="mode-panel active">
+        <p class="mode-description">Start with a ready-made quote and a randomized substitution key.</p>
+        <button id="newCryptogramBtn" class="primary-btn" type="button">Play Random Puzzle</button>
+      </div>
+
+      <div id="customCryptogramControls" class="mode-panel">
+        <p class="mode-description">Type your own phrase and turn it into a cryptogram.</p>
+        <div class="custom-form">
+          <input
+            type="text"
+            id="cryptogramPhraseInput"
+            class="phrase-input"
+            placeholder="Enter a phrase (A–Z and spaces)"
+            maxlength="80"
+          />
+          <button id="generateCryptogramBtn" class="primary-btn" type="button">Generate My Puzzle</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="cryptogramSection" class="game-section hidden">
+      <div class="section-heading">
+        <h3>Encrypted phrase</h3>
+        <button id="nextCryptogramBtn" class="secondary-btn" type="button">Next Random Puzzle</button>
+      </div>
+
+      <div id="cryptogramHint" class="legend-card cryptogram-hint"></div>
+
+      <div id="cryptogramBoard" class="cryptogram-board" aria-live="polite"></div>
+
+      <div class="action-row">
+        <button id="checkCryptogramBtn" class="primary-btn" type="button">Check Answer</button>
+        <button id="showCryptogramBtn" class="secondary-btn" type="button">Show Answer</button>
+      </div>
+
+      <div id="cryptogramMessage" class="result-message"></div>
+    </section>
+  </main>
+
+  <script src="cryptogram.js"></script>
+</body>
+</html>
