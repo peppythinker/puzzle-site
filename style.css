@@ -961,3 +961,82 @@ body {
     grid-template-columns: repeat(9, minmax(28px, 1fr));
   }
 }
+
+
+
+/* ===== PRINT PDF ===== */
+
+
+.print-actions {
+  margin-top: 1rem;
+}
+
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 0.5in;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    margin: 0;
+    padding: 0;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .page.printable-page {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero {
+    margin-bottom: 0.25in;
+  }
+
+  .hero h1 {
+    font-size: 22pt;
+    margin-bottom: 0.1in;
+  }
+
+  .subtitle {
+    font-size: 11pt;
+    margin-bottom: 0.2in;
+  }
+
+  .print-layout {
+    display: grid;
+    grid-template-columns: 1fr 2.2in;
+    gap: 0.35in;
+    align-items: start;
+  }
+
+  .print-grid-wrap,
+  .print-sidebar {
+    break-inside: avoid;
+  }
+
+  .word-search-grid {
+    width: 100%;
+  }
+
+  .word-search-sidebar h2 {
+    margin-top: 0;
+    font-size: 14pt;
+  }
+
+  .word-list {
+    padding-left: 1.1rem;
+    margin: 0;
+  }
+
+  .word-list li {
+    font-size: 11pt;
+    margin-bottom: 0.08in;
+  }
+}
