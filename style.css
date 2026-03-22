@@ -525,7 +525,7 @@ body {
 
 .word-search-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(30px, 48px));
+  grid-template-columns: repeat(11, minmax(30px, 48px));
   gap: 8px;
   border-radius: var(--radius-md);
   padding: 16px;
