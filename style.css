@@ -1040,3 +1040,44 @@ body {
     margin-bottom: 0.08in;
   }
 }
+
+
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 0.5in;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+
+  .print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: white;
+  }
+
+  .print-layout {
+    display: grid;
+    grid-template-columns: 1fr 2.2in;
+    gap: 0.35in;
+    align-items: start;
+  }
+
+  .word-list {
+    margin: 0;
+    padding-left: 1rem;
+  }
+}
