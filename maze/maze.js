@@ -10,6 +10,17 @@ let grid = [];
 let cellSize = 30;
 let currentStyle = "random";
 
+let mazeOffsetX = 0;
+let mazeOffsetY = 0;
+
+let player = {
+  x: 0,
+  y: 0,
+  radius: 8,
+  active: false,
+  won: false
+};
+
 class Cell {
   constructor(r, c) {
     this.r = r;
@@ -65,21 +76,21 @@ function chooseNextNeighbor(current, neighbors) {
   }
 
   if (currentStyle === "horizontal") {
-    const preferred = neighbors.filter(n => n.r === current.r);
+    const preferred = neighbors.filter((n) => n.r === current.r);
     return preferred.length
       ? preferred[Math.floor(Math.random() * preferred.length)]
       : neighbors[Math.floor(Math.random() * neighbors.length)];
   }
 
   if (currentStyle === "vertical") {
-    const preferred = neighbors.filter(n => n.c === current.c);
+    const preferred = neighbors.filter((n) => n.c === current.c);
     return preferred.length
       ? preferred[Math.floor(Math.random() * preferred.length)]
       : neighbors[Math.floor(Math.random() * neighbors.length)];
   }
 
   if (currentStyle === "checkerboard") {
-    const preferred = neighbors.filter(n => (n.r + n.c) % 2 === 0);
+    const preferred = neighbors.filter((n) => (n.r + n.c) % 2 === 0);
     return preferred.length
       ? preferred[Math.floor(Math.random() * preferred.length)]
       : neighbors[Math.floor(Math.random() * neighbors.length)];
@@ -136,7 +147,16 @@ function generateMaze() {
   grid[0][0].walls[0] = false;
   grid[rows - 1][cols - 1].walls[2] = false;
 
+  resetPlayer();
   drawMaze();
+}
+
+function resetPlayer() {
+  player.x = cellSize / 2;
+  player.y = cellSize / 2;
+  player.radius = Math.max(5, cellSize * 0.22);
+  player.active = false;
+  player.won = false;
 }
 
 function drawLine(x1, y1, x2, y2) {
@@ -178,21 +198,50 @@ function drawStartAndFinish() {
   );
 }
 
-function drawMaze() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+function drawPlayer() {
+  ctx.beginPath();
+  ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+  ctx.fillStyle = player.won ? "#f0ad4e" : "#2d9c42";
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#ffffff";
+  ctx.stroke();
+}
 
+function drawWinMessage() {
+  if (!player.won) return;
+
+  ctx.save();
+  ctx.resetTransform();
+
+  ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = "bold 28px Arial";
+  ctx.fillText("You solved it!", canvas.width / 2, canvas.height / 2 - 10);
+
+  ctx.font = "16px Arial";
+  ctx.fillText("Click Generate Maze to play again", canvas.width / 2, canvas.height / 2 + 24);
+  ctx.restore();
+}
+
+function drawMaze() {
   cellSize = Math.floor(Math.min(canvas.width / cols, canvas.height / rows));
+  player.radius = Math.max(5, cellSize * 0.22);
 
   const mazeWidth = cellSize * cols;
   const mazeHeight = cellSize * rows;
 
+  mazeOffsetX = (canvas.width - mazeWidth) / 2;
+  mazeOffsetY = (canvas.height - mazeHeight) / 2;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.save();
-  ctx.translate(
-    (canvas.width - mazeWidth) / 2,
-    (canvas.height - mazeHeight) / 2
-  );
+  ctx.translate(mazeOffsetX, mazeOffsetY);
 
   ctx.strokeStyle = "#222";
   ctx.lineWidth = 2.4;
@@ -212,8 +261,155 @@ function drawMaze() {
   }
 
   drawStartAndFinish();
+  drawPlayer();
   ctx.restore();
+
+  drawWinMessage();
 }
+
+function getMousePositionOnCanvas(event) {
+  const rect = canvas.getBoundingClientRect();
+
+  return {
+    x: (event.clientX - rect.left) * (canvas.width / rect.width),
+    y: (event.clientY - rect.top) * (canvas.height / rect.height)
+  };
+}
+
+function getLocalMazePosition(event) {
+  const mouse = getMousePositionOnCanvas(event);
+
+  return {
+    x: mouse.x - mazeOffsetX,
+    y: mouse.y - mazeOffsetY
+  };
+}
+
+function isInsideMaze(x, y) {
+  return x >= 0 && y >= 0 && x <= cols * cellSize && y <= rows * cellSize;
+}
+
+function getCellAtPosition(x, y) {
+  const col = Math.floor(x / cellSize);
+  const row = Math.floor(y / cellSize);
+
+  if (row < 0 || row >= rows || col < 0 || col >= cols) return null;
+  return { row, col };
+}
+
+function pointHitsWall(x, y) {
+  const pos = getCellAtPosition(x, y);
+  if (!pos) return true;
+
+  const cell = grid[pos.row][pos.col];
+  const localX = x - pos.col * cellSize;
+  const localY = y - pos.row * cellSize;
+  const buffer = player.radius + 1;
+
+  if (cell.walls[0] && localY <= buffer) return true;
+  if (cell.walls[1] && localX >= cellSize - buffer) return true;
+  if (cell.walls[2] && localY >= cellSize - buffer) return true;
+  if (cell.walls[3] && localX <= buffer) return true;
+
+  return false;
+}
+
+function canMoveTo(x, y) {
+  if (!isInsideMaze(x, y)) return false;
+  if (pointHitsWall(x, y)) return false;
+  return true;
+}
+
+function movePlayerToward(targetX, targetY) {
+  const dx = targetX - player.x;
+  const dy = targetY - player.y;
+  const distance = Math.hypot(dx, dy);
+
+  if (distance < 0.001) return;
+
+  const stepSize = Math.max(1.5, cellSize * 0.12);
+  const steps = Math.ceil(distance / stepSize);
+
+  let lastSafeX = player.x;
+  let lastSafeY = player.y;
+
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    const testX = player.x + dx * t;
+    const testY = player.y + dy * t;
+
+    if (canMoveTo(testX, testY)) {
+      lastSafeX = testX;
+      lastSafeY = testY;
+    } else {
+      break;
+    }
+  }
+
+  player.x = lastSafeX;
+  player.y = lastSafeY;
+}
+
+function isPlayerInFinish() {
+  const finishLeft = (cols - 1) * cellSize;
+  const finishTop = (rows - 1) * cellSize;
+  const finishRight = finishLeft + cellSize;
+  const finishBottom = finishTop + cellSize;
+
+  return (
+    player.x > finishLeft + cellSize * 0.15 &&
+    player.x < finishRight - cellSize * 0.15 &&
+    player.y > finishTop + cellSize * 0.15 &&
+    player.y < finishBottom - cellSize * 0.15
+  );
+}
+
+function handlePointerStart(event) {
+  if (player.won) return;
+
+  const local = getLocalMazePosition(event);
+  const distToPlayer = Math.hypot(local.x - player.x, local.y - player.y);
+
+  if (distToPlayer <= Math.max(player.radius * 2.2, 18)) {
+    player.active = true;
+    drawMaze();
+  }
+}
+
+function handlePointerMove(event) {
+  if (!player.active || player.won) return;
+
+  const local = getLocalMazePosition(event);
+  movePlayerToward(local.x, local.y);
+
+  if (isPlayerInFinish()) {
+    player.won = true;
+    player.active = false;
+  }
+
+  drawMaze();
+}
+
+function handlePointerEnd() {
+  player.active = false;
+  drawMaze();
+}
+
+canvas.addEventListener("mousedown", handlePointerStart);
+canvas.addEventListener("mousemove", handlePointerMove);
+window.addEventListener("mouseup", handlePointerEnd);
+
+canvas.addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  handlePointerStart(event.touches[0]);
+}, { passive: false });
+
+canvas.addEventListener("touchmove", (event) => {
+  event.preventDefault();
+  handlePointerMove(event.touches[0]);
+}, { passive: false });
+
+window.addEventListener("touchend", handlePointerEnd);
 
 generateMazeBtn.addEventListener("click", generateMaze);
 
