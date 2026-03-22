@@ -1,4 +1,4 @@
-const GRID_SIZE = 10;
+const GRID_SIZE = 12;
 const DEFAULT_WORDS_PER_PUZZLE = 6;
 const MIN_WORD_LENGTH = 2;
 const MAX_WORDS_PER_PUZZLE = 8;
@@ -132,23 +132,87 @@ function fillEmptyCells(grid) {
 }
 
 function buildPuzzle(words) {
-  const candidateWords = shuffle(words).sort((a, b) => b.length - a.length);
+  const directions = [
+    { dx: 1, dy: 0 },   // horizontal
+    { dx: 0, dy: 1 },   // vertical
+    { dx: 1, dy: 1 },   // diagonal down-right
+    { dx: -1, dy: 1 }   // diagonal down-left
+  ];
 
-  for (let attempt = 0; attempt < 30; attempt += 1) {
-    const grid = makeEmptyGrid();
+  // 🔥 Sort longest words first (VERY IMPORTANT)
+  words = [...words].sort((a, b) => b.length - a.length);
 
-    let allPlaced = true;
-    for (const word of candidateWords) {
-      if (!placeWord(grid, word)) {
-        allPlaced = false;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    // create empty grid
+    grid = Array.from({ length: GRID_SIZE }, () =>
+      Array(GRID_SIZE).fill("")
+    );
+
+    let placedWords = [];
+
+    for (const word of words) {
+      let placed = false;
+
+      // 🔥 Try ALL positions instead of random guessing
+      let positions = [];
+
+      for (let y = 0; y < GRID_SIZE; y++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          for (const dir of directions) {
+            positions.push({ x, y, dx: dir.dx, dy: dir.dy });
+          }
+        }
+      }
+
+      // shuffle positions
+      positions.sort(() => Math.random() - 0.5);
+
+      for (const pos of positions) {
+        const { x, y, dx, dy } = pos;
+
+        let fits = true;
+
+        for (let i = 0; i < word.length; i++) {
+          const nx = x + dx * i;
+          const ny = y + dy * i;
+
+          if (
+            nx < 0 || nx >= GRID_SIZE ||
+            ny < 0 || ny >= GRID_SIZE
+          ) {
+            fits = false;
+            break;
+          }
+
+          const cell = grid[ny][nx];
+          if (cell !== "" && cell !== word[i]) {
+            fits = false;
+            break;
+          }
+        }
+
+        if (fits) {
+          for (let i = 0; i < word.length; i++) {
+            const nx = x + dx * i;
+            const ny = y + dy * i;
+            grid[ny][nx] = word[i];
+          }
+
+          placed = true;
+          placedWords.push(word);
+          break;
+        }
+      }
+
+      // ❌ If ANY word fails → restart whole puzzle
+      if (!placed) {
         break;
       }
     }
 
-    if (allPlaced) {
-      fillEmptyCells(grid);
-      currentWords = candidateWords;
-      currentGrid = grid;
+    // ✅ success if all words placed
+    if (placedWords.length === words.length) {
+      fillEmptyCells();
       return true;
     }
   }
